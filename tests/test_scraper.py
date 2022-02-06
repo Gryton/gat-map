@@ -13,8 +13,10 @@ def test_domain_extraction(startpage, domain):
                          [(("https://www.globaltestingapp.com", "https://www.globaltestingapp.com/sth"),
                            (Link("https://www.globaltestingapp.com", ""),
                             Link("https://www.globaltestingapp.com/new", ""),
-                            Link("javascript;", "")),
-                           ["https://www.globaltestingapp.com/new", "javascript;"]
+                            Link("javascript;", ""),
+                            Link("'https://go.globalapptesting.com/hubfs/Marketing/content/Case%20Study/"
+                                 "LiveSafe%20-%20Case%20Study.pdf';", "")),
+                           ["https://www.globaltestingapp.com/new"]
                            )]
                          )
 def test_filtering_unvisited_links(visited, links, unvisited):
@@ -34,8 +36,7 @@ def test_traverse(mocker):
                   '</html>'
     mocker.patch('helloworld.scraper.Scraper._get_content', return_value=mocked_html)
     items = [item for item in scr.traverse()]
+    assert set(scr._visited) == {"https://www.sth.com", "https://www.sth.com/sth", "https://www.sth.com/New"}
     assert ("https://www.sth.com/New", [("https://www.sth.com", "Main"),
                                         ("https://www.sth.com/sth", "Sth"),
-                                        ("https://www.sth.com/New", "New")]) in items
-    # TODO: add assert with returned tuples like "https://www.sth.com", [("https://www.sth.com", "Main")]
-    assert set(scr._visited) == {"https://www.sth.com", "https://www.sth.com/sth", "https://www.sth.com/New"}
+                                        ("https://www.sth.com/New", "New")], False) in items

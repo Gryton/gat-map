@@ -16,10 +16,16 @@ class Scraper:
         self._domain = self._extract_hostname()
 
     def traverse(self):
+        """Generator yielding page with outlinks
+        :returns (page_url, [out_link_url], is_dead)"""
         for page in self._pages_to_visit():
             html = self._get_content(page)
-
+            if html:
+                is_dead = False
+            else:
+                is_dead = True
             soup = BeautifulSoup(html, 'html.parser')
+            domain_links = []
             full_links = []
             for link in soup.find_all('a'):
                 parsed = urlparse(link.get('href'))
@@ -29,22 +35,29 @@ class Scraper:
                 else:
                     # normal url or dead
                     url = link.get('href')
+                # exclude external links for traversing
+                if self._domain in urlparse(url).netloc:
+                    path = urlparse(url).path
+                    # exclude files besides html
+                    if '.' not in path or path.split('.')[-1] in ['html', '']:
+                        domain_links.append(Link(url, link.text))
                 full_links.append(Link(url, link.text))
-            # TODO: yield page with full_links so service can build nodes map
-            yield page, full_links
-            self._update_unvisited(full_links)
+            yield page, full_links, is_dead
+            self._update_unvisited(domain_links)
 
     def _update_unvisited(self, links):
-        links, _ = tuple(zip(*links))
-        links = filter(lambda x: x not in self._visited, links)
-        self._unvisited.extend(links)
-        self._unvisited = list(set(self._unvisited))
+        if links:
+            links, _ = tuple(zip(*links))
+            links = filter(lambda x: self._domain in urlparse(x).netloc, links)
+            links = filter(lambda x: x not in self._visited, links)
+            self._unvisited.extend(links)
+            self._unvisited = list(set(self._unvisited))
 
     def _pages_to_visit(self):
         while self._unvisited:
             next_page = self._unvisited.pop()
-            yield next_page
             self._visited.append(next_page)
+            yield next_page
 
     def _extract_hostname(self):
         domain = urlparse(self._startpage).hostname
