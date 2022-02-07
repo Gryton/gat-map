@@ -58,6 +58,11 @@ class GraphAnalyzer:
         most_linked = [link for link in authorities if authorities[link] == max_authority]
         return most_linked
 
+    def get_dead_links(self, domain):
+        dead_links = [node["url"] for node in self.nodes
+                      if node["is_dead"] is True and domain in urlparse(node["url"]).netloc]
+        return dead_links
+
 
 if __name__ == '__main__':
     db_url = "tmp_copy.json"
