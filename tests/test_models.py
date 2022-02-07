@@ -14,7 +14,6 @@ def db(mocker):
 
 
 def test_save_load(db):
-    print(db)
     n1 = models.Node("https://www.sth.com/New", [("https://www.sth.com", "Main")], False)
     n2 = models.Node("https://www.sth.com/Sth", [("https://www.sth.com/s", "s")], False)
     nodes = [n1, n2]

@@ -1,7 +1,7 @@
 from typing import List, Tuple
 import json
 
-db_url = "tmp.json"
+db_url = "db.json"
 
 
 class Node:
