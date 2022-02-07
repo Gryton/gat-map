@@ -36,12 +36,12 @@ class GraphAnalyzer:
             ext_counts.append(ext_count)
         return mean(ext_counts)
 
-    def most_distant_subpages(self, source='https://globalapptesting.com', hops=Optional[int]):
+    def most_distant_subpages(self, source='https://globalapptesting.com', hops: Optional[int] = None):
         """Finds most distant subpage to reach from specified source. If number of hops is specified finds pages
         reachable with such number of hops
 
         :returns list of urls, number of hops"""
-        paths = self.shortest_paths
+        paths = self.shortest_paths[source]
         if hops is None:
             max_url = max(paths, key=lambda i: len(paths[i]))
             hops = len(paths[max_url])
