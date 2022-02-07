@@ -1,2 +1,4 @@
 beautifulsoup4
 Flask==1.1.2
+pytest
+pytest-mock
