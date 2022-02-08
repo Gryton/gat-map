@@ -1,6 +1,6 @@
-from scraper import Scraper
-from models import node_dao
-from graph import GraphAnalyzer
+from helloworld.scraper import Scraper
+from helloworld.models import node_dao
+from helloworld.graph import GraphAnalyzer
 
 
 def browse_page(url) -> None:
