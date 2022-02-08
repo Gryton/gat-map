@@ -5,7 +5,7 @@ from statistics import mean
 
 
 class GraphAnalyzer:
-    def __init__(self, nodes: List[Dict]):
+    def __init__(self, nodes=None):
         self.nodes = nodes
         self.graph = self._create_graph()
         self.shortest_paths = nx.shortest_path(self.graph)
@@ -19,6 +19,9 @@ class GraphAnalyzer:
                 DG.add_node(link[0])
                 DG.add_edge(n["url"], link[0])
         return DG
+
+    def save(self):
+        return nx.readwrite.node_link_data(self.graph)
 
     def average_number_of_internal_links(self, domain):
         """Counts all links in all nodes that have same domain as specified"""

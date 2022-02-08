@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if in_progress %}
+    <meta http-equiv="refresh" content="5; URL={{ url_for('index') }}">
+    {% endif %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <title>Site Map App</title>
+</head>
+<body>
+    <div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-warning" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+      {% endwith %}
+    </div>
+    <div class="container">
+      <form id="analysePage" action="{{ url_for('map_page') }}" class="d-flex" method="post">
+          {{map_form.hidden_tag()}}
+        <div class="list-group-item list-group-item-action p-3">
+          {{map_form.start_page.label(class="form-label")}}{{map_form.start_page(class="form-control", placeholder="www.globalapptesting.com")}}
+          {{map_form.submit(class="btn btn-primary")}}
+        </div>
+      </form>
+    <div class="list-group-item list-group-item-action p-3">
+      <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+        {{ upload_form.hidden_tag() }}
+        {{ upload_form.start_page.label(class="form-label")}}{{ upload_form.start_page(class="form-control", placeholder="www.globalapptesting.com") }}
+        {{ upload_form.file(class="form-control") }}
+        {{ upload_form.submit(class="btn btn-primary") }}
+      </form>
+    </div>
+    <div class="list-group-item list-group-item-action p-3">
+      {% if page_parameters['int_links_mean'] %}
+      <a class="btn btn-primary" href="{{ url_for('download_file') }}" role="button">Download db</a>
+    </div>
+      <form id="shortPath" action="{{ url_for('short_path') }}" class="d-flex" method="post">
+          {{path_form.hidden_tag()}}
+        <div class="list-group-item list-group-item-action p-3">
+          {{path_form.source.label(class="form-label")}}{{path_form.source(class="form-control", placeholder="www.globalapptesting.com")}}
+          {{path_form.target.label(class="form-label")}}{{path_form.target(class="form-control", placeholder="www.globalapptesting.com/blog/page/6")}}
+          {{path_form.submit(class="btn btn-primary")}}
+        </div>
+      </form>
+      {% endif %}
+      {% if short_path %}
+      <div class="container">
+        <p>Shortest path from {{ short_path[0] }} to {{ short_path[-1] }}</p>
+        <div class="list-group">
+          {% for link in short_path %}
+           <a href="{{ link }}" class="list-group-item list-group-item-action">{{ link }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if in_progress %}
+      <div id="in_progress"><p>Analysis is running, page will reload automatically.</p></div>
+      {% endif %}
+      <div class="list-group-item list-group-item-action p-3">
+        {% if page_parameters['int_links_mean'] %}
+            <p>Internal links average: {{ page_parameters['int_links_mean'] }}</p>
+        {% endif %}
+        {% if page_parameters['ext_links_mean'] %}
+            <p>External links average: {{ page_parameters['ext_links_mean'] }}</p>
+        {% endif %}
+        {% if page_parameters['most_distant'] %}
+            <p>Most distant pages:</p>
+            <div class="list-group">
+                {% for link in page_parameters['most_distant'] %}
+                 <a href="{{ link }}" class="list-group-item list-group-item-action">{{ link }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if page_parameters['dead_links'] %}
+            <p>Dead links:</p>
+              <div class="list-group">
+                {% for link in page_parameters['dead_links'] %}
+                 <a href="{{ link }}" class="list-group-item list-group-item-action">{{ link }}</a>
+                {% endfor %}
+              </div>
+        {% endif %}
+        {% if page_parameters['most_difficult'] %}
+            <p>Pages that are most difficult to reach:</p>
+            <div class="list-group">
+                {% for link in page_parameters['most_difficult'] %}
+                 <a href="{{ link }}" class="list-group-item list-group-item-action">{{ link }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if page_parameters['most_linked'] %}
+            <p>Pages that are linked the most:</p>
+            <div class="list-group">
+                {% for link in page_parameters['most_linked'] %}
+                 <a href="{{ link }}" class="list-group-item list-group-item-action">{{ link }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+      </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>
