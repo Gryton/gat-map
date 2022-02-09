@@ -81,7 +81,9 @@ def upload():
             filepath = os.path.join(basedir, 'uploads', filename)
             upload_form.file.data.save(filepath)
             upload_nodes(filepath)
+            session['analysis_running'] = True
             executor.submit_stored('analyze', analyze, url=upload_form.start_page.data, local=True)
+            flash('Analysis started, page will reload automatically.')
         else:
             flash("Wrong file extension, upload rejected.")
     return redirect(url_for('index'))
