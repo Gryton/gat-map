@@ -1,8 +1,52 @@
-Welcome to the AWS CodeStar sample web service
+Welcome to the gat-map engineering task repository
 ==============================================
 
-This sample code helps get you started with a simple Flask web service
-deployed by AWS Elastic Beanstalk and AWS CloudFormation.
+This code is developed as showcase for globalapptesting.com engineering task, build on Flask and
+deployed by AWS Elastic Beanstalk and AWS CloudFormation. 
+
+Getting Started
+---------------
+
+To run locally the code, you'll need to clone your project's repository to your
+local computer. 
+
+1. Create a Python virtual environment for the project. At the terminal, type
+   the following command:
+
+        $ python3 -m venv ./venv
+
+2. Activate the virtual environment:
+    
+      - Linux:  $ source ./venv/bin/activate
+      - Windows $ ./venv/Scripts/activate.bat
+
+3. Install Python dependencies for this project:
+
+        $ pip install -r requirements.txt
+
+4. Add directory to PYTHONPATH
+
+   - Windows: $ set PYTHONPATH=%cd%
+   - Linux:   $ export PYTHONPATH='.'
+
+5. Start the Flask development server:
+
+        $ python helloworld/application.py --port 8000
+
+6. Open http://127.0.0.1:8000/ in a web browser to view the application.
+
+Usage
+----------
+
+When your service is running in your browser:
+1. Put your analysed website url, or leave default one
+2. Click *Generate site map button*
+3. Grab a coffee and wait, crawling through whole page takes some time. Page will refresh automatically when results 
+are ready.
+4. When you have your analysis finished you can click on *Download db* to save results from crawling website for next 
+run. Crawling is a long process, so it's much faster to upload crawling results for analysis next time. Server also 
+keeps results from last crawling.
+
 
 What's Here
 -----------
@@ -10,94 +54,33 @@ What's Here
 This sample includes:
 
 * README.md - this file
-* buildspec.yml - this file is used by AWS CodeBuild to package your
+* buildspec.yml - this file is used by AWS CodeBuild to package
   application for deployment to AWS Lambda
 * requirements.txt - this file is used install Python dependencies needed by
   the Flask application
 * setup.py - this file is used by Python's setuptools library to describe how
-  your application will be packaged and installed
-* helloworld/ - this directory contains the Python source code for your Flask application
-* tests/ - this directory contains unit tests for your application
+  your application will be packaged and installed (used in AWS pipeline)
+* helloworld/ - this directory contains the Python source code for Flask application
+* tests/ - this directory contains unit tests for application
 * .ebextensions/ - this directory contains the configuration files that allow
-  AWS Elastic Beanstalk to deploy your application
+  AWS Elastic Beanstalk to deploy application
 * template.yml - this file contains the description of AWS resources used by AWS
-  CloudFormation to deploy your infrastructure
+  CloudFormation to deploy infrastructure
 * template-configuration.json - this file contains the project ARN with placeholders used for tagging resources with the project ID
 
-Getting Started
----------------
 
-These directions assume you want to develop on  your development environment or a Cloud9 environment, and not
-from the Amazon EC2 instance itself. If you're on the Amazon EC2 instance, the
-virtual environment is already set up for you, and you can start working on the
-code.
-
-To work on the sample code, you'll need to clone your project's repository to your
-local computer. You can find instructions in the AWS CodeStar user guide at https://docs.aws.amazon.com/codestar/latest/userguide/getting-started.html#clone-repo.
-
-1. Create a Python virtual environment for your Flask project. This virtual
-   environment allows you to isolate this project and install any packages you
-   need without affecting the system Python installation. At the terminal, type
-   the following command:
-
-        $ python3 -m venv ./venv
-
-2. Activate the virtual environment:
-
-        $ source ./venv/bin/activate
-
-3. Install Python dependencies for this project:
-
-        $ pip install -r requirements.txt
-
-4. Install the sample application code into your virtual environment:
-
-        $ python setup.py install
-
-5. Start the Flask development server:
-
-        $ python helloworld/application.py --port 8000
-
-6. Open http://127.0.0.1:8000/ in a web browser to view the output of your
-   service.
-
-What Do I Do Next?
+How it works?
 ------------------
 
-Once you have a virtual environment running, you can start making changes to
-the sample Flask web service. We suggest making a small change to application.py first,
-so you can see how changes pushed to your project's repository are automatically picked
-and deployed to the Amazon EC2 instance by AWS Elastic Beanstalk. (You can watch the
-progress on your project dashboard.) Once you've seen how that works, start developing
-your own code, and have fun!
+This is single page application, meaning that only '/' path is displayed, with very simple UI, only to present backend
+output. Backend is simplified to showcase approach for solving problem of traversing web page to obtain statistics.
 
-To run your tests locally, go to the root directory of the sample code and run
-the `python setup.py pytest` command, which AWS CodeBuild also runs through
-your `buildspec.yml` file.
+Business logic is put inside `application.py` and `services.py` files. `application.py` mainly consists of business
+logic for handling endpoints and provide data to "frontend", while `services.py` is used as a proxy for wanna-be 
+database and "worker" objects. In `models.py` you can find "database" adapter, however this project doesn't use
+database, as simplification. It should be adapted to use database in production scale application. `scraper.py` is
+implementation of site crawler that obtains all links found during crawling web page, and `graph.py` is implementation
+of analyst based on Directed Graph for all subpages and external links, that can present page statistics or 
+e.g. shortest path. `forms.py` contains WTForms prototypes which `application.py` uses to render forms in html template.
 
-To test your new code during the release process, modify the existing tests or
-add tests to the tests directory. AWS CodeBuild will run the tests during the
-build stage of your project pipeline. You can find the test results
-in the AWS CodeBuild console.
-
-Learn more about AWS CodeBuild and how it builds and tests your application here:
-https://docs.aws.amazon.com/codebuild/latest/userguide/concepts.html
-
-Learn more about AWS CodeStar by reading the user guide. Ask questions or make
-suggestions on our forum.
-
-User Guide: https://docs.aws.amazon.com/codestar/latest/userguide/welcome.html
-Forum: https://forums.aws.amazon.com/forum.jspa?forumID=248
-
-Best Practices: https://docs.aws.amazon.com/codestar/latest/userguide/best-practices.html?icmpid=docs_acs_rm_sec
-
-How Do I Add Template Resources to My Project?
-------------------
-
-To add AWS resources to your project, you'll need to edit the `template.yml`
-file in your project's repository. You may also need to modify permissions for
-your project's worker roles. After you push the template change, AWS CodeStar
-and AWS CloudFormation provision the resources for you.
-
-See the AWS CodeStar user guide for instructions to modify your template:
-https://docs.aws.amazon.com/codestar/latest/userguide/how-to-change-project.html#customize-project-template
+REMEMBER THIS IS ONLY SHOWCASE! Production version would require changes to serve multiple users.
