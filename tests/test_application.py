@@ -1,6 +1,6 @@
 import json
 import pytest
-from helloworld.application import application
+from gat_map.application import application
 
 
 @pytest.fixture

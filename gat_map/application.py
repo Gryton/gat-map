@@ -2,8 +2,8 @@
 import optparse
 from flask import Flask, flash, redirect, render_template, send_file, session, url_for
 from flask_executor import Executor
-from helloworld.forms import GenerateSiteMapForm, PathForm, UploadForm
-from helloworld.services import analyze_page, create_analyst, download_db, upload_nodes
+from gat_map.forms import GenerateSiteMapForm, PathForm, UploadForm
+from gat_map.services import analyze_page, create_analyst, download_db, upload_nodes
 import os
 from urllib.parse import urlparse
 from werkzeug.utils import secure_filename

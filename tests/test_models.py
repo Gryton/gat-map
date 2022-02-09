@@ -1,4 +1,4 @@
-import helloworld.models as models
+import gat_map.models as models
 import os
 import pytest
 

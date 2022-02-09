@@ -31,7 +31,7 @@ local computer.
 
 5. Start the Flask development server:
 
-        $ python helloworld/application.py --port 8000
+        $ python gat_map/application.py --port 8000
 
 6. Open http://127.0.0.1:8000/ in a web browser to view the application.
 
@@ -60,7 +60,7 @@ This sample includes:
   the Flask application
 * setup.py - this file is used by Python's setuptools library to describe how
   your application will be packaged and installed (used in AWS pipeline)
-* helloworld/ - this directory contains the Python source code for Flask application
+* gat_map/ - this directory contains the Python source code for Flask application
 * tests/ - this directory contains unit tests for application
 * .ebextensions/ - this directory contains the configuration files that allow
   AWS Elastic Beanstalk to deploy application

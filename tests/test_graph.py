@@ -1,7 +1,7 @@
 import pytest
 import json
 import os
-from helloworld.graph import GraphAnalyzer
+from gat_map.graph import GraphAnalyzer
 
 
 @pytest.fixture

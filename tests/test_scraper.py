@@ -1,4 +1,4 @@
-from helloworld.scraper import Scraper, Link
+from gat_map.scraper import Scraper, Link
 import pytest
 
 
