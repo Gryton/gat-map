@@ -34,7 +34,7 @@ def test_traverse(mocker):
                   '<a href="https://www.sth.com/sth">Sth</a>'\
                   '<a href="/New">New</a>'\
                   '</html>'
-    mocker.patch('helloworld.scraper.Scraper._get_content', return_value=mocked_html)
+    mocker.patch('gat_map.scraper.Scraper._get_content', return_value=mocked_html)
     items = [item for item in scr.traverse()]
     assert set(scr._visited) == {"https://www.sth.com", "https://www.sth.com/sth", "https://www.sth.com/New"}
     assert ("https://www.sth.com/New", [("https://www.sth.com", "Main"),
