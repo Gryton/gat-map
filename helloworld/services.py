@@ -26,6 +26,7 @@ def analyze_page(url) -> GraphAnalyzer:
 def upload_nodes(json_file_path) -> GraphAnalyzer:
     """Load nodes from json file into db"""
     node_dao.load_from_db(json_file_path)
+    node_dao.save_to_db()
     return create_analyst()
 
 

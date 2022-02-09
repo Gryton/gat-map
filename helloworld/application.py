@@ -1,6 +1,6 @@
 #!flask/bin/python
 import optparse
-from flask import Flask, flash, redirect, render_template, request, send_file, session, url_for
+from flask import Flask, flash, redirect, render_template, send_file, session, url_for
 from flask_executor import Executor
 from helloworld.forms import GenerateSiteMapForm, PathForm, UploadForm
 from helloworld.services import analyze_page, create_analyst, download_db, upload_nodes
@@ -12,6 +12,7 @@ from werkzeug.utils import secure_filename
 application = Flask(__name__)
 executor = Executor(application)
 application.config['SECRET_KEY'] = os.getenv('SECRET_KEY', default='A very terrible secret key.')
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 @application.before_request
@@ -77,7 +78,7 @@ def upload():
     if upload_form.validate_on_submit():
         filename = secure_filename(upload_form.file.data.filename)
         if '.' in filename and filename.rsplit('.', 1)[1].lower() == 'json':
-            filepath = 'uploads/' + filename
+            filepath = os.path.join(basedir, 'uploads', filename)
             upload_form.file.data.save(filepath)
             upload_nodes(filepath)
             executor.submit_stored('analyze', analyze, url=upload_form.start_page.data, local=True)

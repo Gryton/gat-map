@@ -1,7 +1,8 @@
 from typing import List, Tuple
 import json
+import os
 
-db_url = "db.json"
+db_url = os.path.join(os.path.abspath(os.path.dirname(__file__)), "db.json")
 
 
 class Node:
