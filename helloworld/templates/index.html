@@ -40,19 +40,19 @@
         {{ upload_form.submit(class="btn btn-primary") }}
       </form>
     </div>
+    {% if page_parameters['int_links_mean'] %}
     <div class="list-group-item list-group-item-action p-3">
-      {% if page_parameters['int_links_mean'] %}
       <a class="btn btn-primary" href="{{ url_for('download_file') }}" role="button">Download db</a>
     </div>
-      <form id="shortPath" action="{{ url_for('short_path') }}" class="d-flex" method="post">
-          {{path_form.hidden_tag()}}
-        <div class="list-group-item list-group-item-action p-3">
-          {{path_form.source.label(class="form-label")}}{{path_form.source(class="form-control", placeholder="www.globalapptesting.com")}}
-          {{path_form.target.label(class="form-label")}}{{path_form.target(class="form-control", placeholder="www.globalapptesting.com/blog/page/6")}}
-          {{path_form.submit(class="btn btn-primary")}}
-        </div>
-      </form>
-      {% endif %}
+    <form id="shortPath" action="{{ url_for('short_path') }}" class="d-flex" method="post">
+        {{path_form.hidden_tag()}}
+      <div class="list-group-item list-group-item-action p-3">
+        {{path_form.source.label(class="form-label")}}{{path_form.source(class="form-control", placeholder="www.globalapptesting.com")}}
+        {{path_form.target.label(class="form-label")}}{{path_form.target(class="form-control", placeholder="www.globalapptesting.com/blog/page/6")}}
+        {{path_form.submit(class="btn btn-primary")}}
+      </div>
+    </form>
+    {% endif %}
       {% if short_path %}
       <div class="container">
         <p>Shortest path from {{ short_path[0] }} to {{ short_path[-1] }}</p>
