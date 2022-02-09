@@ -17,8 +17,8 @@ local computer.
 
 2. Activate the virtual environment:
     
-      - Linux:  $ source ./venv/bin/activate
-      - Windows $ ./venv/Scripts/activate.bat
+      - Linux: `$ source ./venv/bin/activate`
+      - Windows: `$ ./venv/Scripts/activate.bat`
 
 3. Install Python dependencies for this project:
 
@@ -26,8 +26,8 @@ local computer.
 
 4. Add directory to PYTHONPATH
 
-   - Windows: $ set PYTHONPATH=%cd%
-   - Linux:   $ export PYTHONPATH='.'
+   - Windows: `$ set PYTHONPATH=%cd%`
+   - Linux:   `$ export PYTHONPATH='.'`
 
 5. Start the Flask development server:
 
